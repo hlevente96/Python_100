@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import randint, choice, shuffle
 import pyperclip
+import json
 # ---------------------------- CONSTANTS  ------------------------------- #
 
 letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
@@ -24,8 +25,20 @@ def generate():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_password():
-    line = f"{entry1.get()} | {entry2.get()} | {entry3.get()}\n"
-    if len(entry1.get()) == 0 or len(entry3.get()) == 0:
+    website = entry1.get()
+    email = entry2.get()
+    password = entry3.get()
+
+    new_data = {
+        website: {
+            "email": email,
+            "password": password,
+        }
+    }
+
+    line = f"{website} | {email} | {password}\n"
+
+    if len(website) == 0 or len(password) == 0:
         messagebox.showerror(
             title="Error - Empty Box",
             message="You have left something empty."
@@ -34,14 +47,17 @@ def save_password():
         is_ok = messagebox.askokcancel(
             title="Add New Password",
             message=f"These are the details entered:\n"
-                    f"Website: {entry1.get()}\n"
-                    f"Email: {entry2.get()}\n"
-                    f"Password: {entry3.get()}\n"
+                    f"Website: {website}\n"
+                    f"Email: {email}\n"
+                    f"Password: {password}\n"
                     f"Is it okay to save?"
         )
         if is_ok:
-            with open("passwords.txt", "a") as f:
-                f.write(line)
+            with open("data.json", "r") as f:
+                data = json.load(f)
+                data.update(new_data)
+            with open("data.json", "w") as f:
+                json.dump(data, f, indent=4)
             entry1.delete(0,END)
             entry3.delete(0, END)
 
