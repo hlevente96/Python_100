@@ -53,13 +53,47 @@ def save_password():
                     f"Is it okay to save?"
         )
         if is_ok:
-            with open("data.json", "r") as f:
-                data = json.load(f)
+            try:
+                with open("data.json", "r") as f:
+                    data = json.load(f)
+            except (FileNotFoundError, json.JSONDecodeError):
+                data = new_data
+            else:
                 data.update(new_data)
-            with open("data.json", "w") as f:
-                json.dump(data, f, indent=4)
-            entry1.delete(0,END)
-            entry3.delete(0, END)
+            finally:
+                with open("data.json", "w") as f:
+                    json.dump(data, f, indent=4)
+                entry1.delete(0,END)
+                entry3.delete(0, END)
+
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+def search():
+    website = entry1.get()
+    try:
+        with open("data.json", "r") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        messagebox.showerror(
+            title="Error - Empty Password Manager",
+            message="There is no Password in the PM."
+        )
+    else:
+        if website in data:
+            data_info = data[website]
+            email = data_info["email"]
+            password = data_info["password"]
+            messagebox.showinfo(
+                title=f"{website}",
+                message=f"These are the details info:\n"
+                        f"Website: {website}\n"
+                        f"Email: {email}\n"
+                        f"Password: {password}\n"
+            )
+        else:
+            messagebox.showerror(
+                title="Error - Password Manager",
+                message="This Password is not in the PM."
+            )
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -79,8 +113,8 @@ label2.grid(row=2, column=0)
 label3 = Label(text="Password:")
 label3.grid(row=3, column=0)
 # Entries
-entry1 = Entry(width=40)
-entry1.grid(row=1, column=1, columnspan=2)
+entry1 = Entry(width=22)
+entry1.grid(row=1, column=1)
 entry1.focus()
 entry2 = Entry(width=40)
 entry2.grid(row=2, column=1, columnspan=2)
@@ -88,6 +122,12 @@ entry2.insert(0,"test123@gmail.com")
 entry3 = Entry(width=22)
 entry3.grid(row=3, column=1)
 # Button
+button_search = Button(
+    text="Search",
+    width=13,
+    command=search
+)
+button_search.grid(row=1, column=2)
 button_generate = Button(
     text="Generate Password",
     highlightthickness=0,
