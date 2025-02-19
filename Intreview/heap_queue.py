@@ -1,10 +1,10 @@
 from heapq import heappush, heappop, heapify
-heap = [-4,-12,-15,-25]
+heap = [4,12,15,25]
 heapify(heap)
 
-heappush(heap, -10)
-heappush(heap, -20)
-heappush(heap, -5)
+heappush(heap, 10)
+heappush(heap, 20)
+heappush(heap, 5)
 print("Heap after inserting elements:", heap)
 
 min_elem = heappop(heap)
