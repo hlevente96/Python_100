@@ -1,5 +1,3 @@
-import os
-
 def minimum_moves(grid, startX, startY, goalX, goalY):
     rows = len(grid)
     columns = len(grid[0])
@@ -20,21 +18,3 @@ def minimum_moves(grid, startX, startY, goalX, goalY):
                     visited_states.add((nx, ny))
                     queue.append((nx, ny, moves + 1))
     return -1
-
-
-if __name__ == '__main__':
-    fptr = open(os.environ['OUTPUT_PATH'], 'w')
-    n = int(input().strip())
-    grid = []
-    for _ in range(n):
-        grid_item = input()
-        grid.append(grid_item)
-
-    first_multiple_input = input().rstrip().split()
-    startX = int(first_multiple_input[0])
-    startY = int(first_multiple_input[1])
-    goalX = int(first_multiple_input[2])
-    goalY = int(first_multiple_input[3])
-    result = minimum_moves(grid, startX, startY, goalX, goalY)
-    fptr.write(str(result) + '\n')
-    fptr.close()
