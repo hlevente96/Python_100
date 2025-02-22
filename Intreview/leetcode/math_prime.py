@@ -22,5 +22,4 @@ def is_power_of_three(n: int) -> bool:
     while n % 3 == 0:
         n /= 3
     return n==1
-
 print(is_power_of_three(242))
