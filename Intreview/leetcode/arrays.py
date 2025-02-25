@@ -77,3 +77,39 @@ def single_number(nums):
 
 nums = [3, 3, 4, 1, 2, 1, 2, 5, 6, 4, 6]
 print(single_number(nums))
+
+############ SIXTH ############
+def intersect(nums1, nums2):
+    result = []
+    for num in nums1:
+        if num in nums2:
+            result.append(num)
+            nums2.remove(num)
+    return result
+
+from collections import Counter
+def intersect_optimal(nums1, nums2):
+    result = []
+    counts = Counter(nums1)
+    for num in nums2:
+        if counts[num] > 0:
+            result.append(num)
+            counts[num] -= 1
+    return result
+
+
+def intersect_if_inp_sorted(nums1, nums2):
+    i, j = 0, 0
+    result = []
+
+    while i < len(nums1) and j < len(nums2):
+        if nums1[i] == nums2[j]:
+            result.append(nums1[i])
+            i += 1
+            j += 1
+        elif nums1[i] < nums2[j]:
+            i += 1
+        else:
+            j += 1
+    return result
+
